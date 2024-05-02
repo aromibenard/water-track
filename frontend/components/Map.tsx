@@ -1,10 +1,15 @@
 'use client'
 
 import { Loader } from '@googlemaps/js-api-loader'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-export function Map() {
+interface MapProps {
+   onAddressSelect: (address: string) => void 
+}
+
+export function Map({ onAddressSelect } : MapProps ) {
     const mapRef = React.useRef<HTMLDivElement>(null)
+    const [searchedAddress, setSearchedAddress] = useState('')
 
     useEffect (() => {
 
@@ -36,13 +41,6 @@ export function Map() {
             //map setup
             const map = new Map(mapRef.current as HTMLDivElement, mapOptions)
 
-            //put up a marker
-            // const marker = new Marker({
-            //     map: map,
-            //     position: position
-
-            // })
-
             //initializing search box
             const input = document.createElement('input')
             input.placeholder = 'Search Delivery Address'
@@ -70,6 +68,12 @@ export function Map() {
                 if (places.length === 0) {
                     return
                 }
+
+                const selectedPlace = places[0]
+                const formattedAddress = selectedPlace.formatted_address as string
+
+                setSearchedAddress(formattedAddress)
+                onAddressSelect(formattedAddress)
 
                 // Clear out the old markers.
                 markers.forEach(marker => {
@@ -112,5 +116,3 @@ export function Map() {
       
   )
 }
-
-

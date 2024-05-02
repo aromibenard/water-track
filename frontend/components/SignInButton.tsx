@@ -14,8 +14,8 @@ const SignInButton = () => {
         const auth = getAuth(db)
         
         return signInWithPopup(auth, provider)
-            .then((result) => {
-                const user = result.user
+            .then(() => {
+                // const user = auth.currentUser
 
                 //navigate to home page after sign in
                 router.push('/')
