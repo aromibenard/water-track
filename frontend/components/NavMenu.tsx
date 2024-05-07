@@ -41,20 +41,20 @@ export function NavMenu() {
                   </a>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/docs" title="Order">
+              <ListItem href="/" title="Order">
                 Request delivery to your current address.
               </ListItem>
-              <ListItem href="/docs/installation" title="About Us">
+              <ListItem href="/about" title="About Us">
                 About the WaterTrak app.
               </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Our Mission">
+              <ListItem href="/about/mission" title="Our Mission">
                 our mission statement.
               </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
+          <Link href="/contact" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Contact Us
             </NavigationMenuLink>

@@ -20,12 +20,13 @@ import {
   SheetTitle, 
   SheetTrigger 
 } from "@/components/ui/sheet";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
 
 export default  function Home() {
 
   const [selectedAddress, setSelectedAddress] = useState('')
   const [userName, setUserName] = useState('')
-  const [verifiedEmail, setVerifiedEmail] = useState('')
 
   const handleAddressSelect = (address: string) => {
     setSelectedAddress(address)
@@ -47,18 +48,6 @@ export default  function Home() {
         const user = auth.currentUser
         setUserName(user!.displayName!)
         
-
-        try {
-
-          db.collection('users').doc(user?.uid).set({
-            email: user!.email,
-            photoURl: user!.photoURL
-
-          }, {merge: true})
-
-        } catch (error) {
-          console.error('error creating user')
-        }
 
       } else {
         router.push('/auth/register');
@@ -88,9 +77,6 @@ export default  function Home() {
           <Button 
             variant={'outline'} 
             className="p-6 mx-auto w-32 shadow-md my-3 hover:text-white hover:bg-purple-600 transition"
-            onClick={(() => {
-              console.log(selectedAddress)
-            })}
           >
             Continue
           </Button>
@@ -119,13 +105,43 @@ export default  function Home() {
           </div>
           <SheetFooter>
             <SheetClose asChild>
-              <Button 
-                type="submit" 
-                variant='outline' 
-                className="mx-auto my-2 w-40 p-6 hover:bg-purple-600 transition shadow-md hover:text-white"
-              >
-                Place Order
-              </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button 
+                    type="submit" 
+                    variant='outline' 
+                    className="mx-auto my-2 w-40 p-6 hover:bg-purple-600 transition shadow-md hover:text-white"
+                >
+                    Place Order
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Order Placed Successfully!</DialogTitle>
+                  <DialogDescription>
+                    Delivery Details:
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex items-center space-x-2">
+                  <div className="grid flex-1 gap-2">
+                    <p>Name: {userName}</p>
+                    <p>Address: {selectedAddress}</p>
+                  </div>
+                </div>
+                <DialogFooter className="sm:justify-start">
+                  <DialogClose asChild>
+                    <Button type="button" 
+                        variant="secondary"
+                        className="hover:bg-purple-500 hover:text-white transition "
+                        onClick={() => (
+                          router.push('/orders/track')
+                        )}>
+                      Track Order
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
             </SheetClose>
           </SheetFooter>
        </SheetContent>
