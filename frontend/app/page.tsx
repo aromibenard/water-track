@@ -6,6 +6,7 @@ import { Map } from "@/components/Map";
 import NavBar from "@/components/NavBar";
 import Loader from "@/components/Loader"
 import { Button } from "@/components/ui/button";
+import { WaterQuantityCheckBox } from "@/components/WaterQuantityCheckBox"
 import { db } from "@/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
@@ -89,11 +90,11 @@ export default  function Home() {
               Check to see that the details are correct. Click continue to proceed.
             </SheetDescription>
           </SheetHeader>
-          <div className="grid py-4 h-[10rem]">
+          <div className="grid py-4 ">
             <div className=" grid items-center">
               <h3 className="flex-row p-2">Name: <span className="px-2">{userName}</span></h3>
             </div>
-            <div className="grid items-center">
+            <div className="grid items-center my-6">
               <h3 className="flex px-2">
                 Delivery Address:<span 
                   className="italic px-2"
@@ -102,6 +103,7 @@ export default  function Home() {
                   </span>
               </h3>
             </div>
+            <WaterQuantityCheckBox/>
           </div>
           <SheetFooter>
             <SheetClose asChild>
