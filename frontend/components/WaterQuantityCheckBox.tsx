@@ -19,20 +19,20 @@ import { toast } from "@/components/ui/use-toast"
 
 const items = [
   {
-    id: "recents",
-    label: "Recents",
+    id: "fifty",
+    label: "50 Litres",
   },
   {
-    id: "home",
-    label: "Home",
+    id: "hundred",
+    label: "100 Litres",
   },
   {
-    id: "applications",
-    label: "Applications",
+    id: "twofifty",
+    label: "250 Litres",
   },
   {
-    id: "desktop",
-    label: "Desktop",
+    id: "thousand",
+    label: "1000 Litres",
   }
  
 ] as const
@@ -43,28 +43,41 @@ const FormSchema = z.object({
   }),
 })
 
-export function WaterQuantityCheckBox() {
+type WaterQuantityCheckBoxProps = {
+  onWaterQuantitySelect: (waterQuantity: string) => void
+}
+
+export const WaterQuantityCheckBox: React.FC<WaterQuantityCheckBoxProps> = ({ onWaterQuantitySelect  }) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      items: ["recents", "home"],
+      items: ["fifty"],
     },
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  const getItemLabels = (selectedIds: string[]): string[] => {
+    return selectedIds.map((id) => items.find((item) => item.id === id)?.label ?? "");
+  }
+
+  function onSubmit(data: z.infer<typeof FormSchema>) { 
+    const selectedLabels = getItemLabels(data.items)
+    const selectedLabelsString = selectedLabels.join(", ")
+
+    onWaterQuantitySelect(selectedLabelsString)
     toast({
-      title: "You submitted the following values:",
+      title: "Delivery Quantity Confirmed",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
+        <p className="mt-2 w-[340px] rounded-md bg-purple-600 p-4 text-white">
+          {selectedLabelsString}
+        </p>
       ),
+      duration: 1000
     })
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center border-b-2 pb-8">
         <FormField
           control={form.control}
           name="items"
@@ -72,8 +85,8 @@ export function WaterQuantityCheckBox() {
             <FormItem>
               <div className="mb-4">
                 <FormLabel className="text-base"></FormLabel>
-                <FormDescription>
-                  Choose water quantity
+                <FormDescription className="text-white">
+                  Choose Water quantity
                 </FormDescription>
               </div>
               {items.map((item) => (
@@ -85,7 +98,7 @@ export function WaterQuantityCheckBox() {
                     return (
                       <FormItem
                         key={item.id}
-                        className="flex flex-row items-start space-x-3 space-y-0"
+                        className="flex flex-row text-white items-start space-x-3 space-y-0"
                       >
                         <FormControl>
                           <Checkbox
@@ -113,7 +126,11 @@ export function WaterQuantityCheckBox() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button 
+          type="submit" 
+          variant={"outline"} 
+          className="flex mx-auto hover:scale-105 hover:bg-purple-600 hover:text-white transition"
+          >Confirm</Button>
       </form>
     </Form>
   )

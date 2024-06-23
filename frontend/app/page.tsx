@@ -29,6 +29,12 @@ export default  function Home() {
   const [selectedAddress, setSelectedAddress] = useState('')
   const [userName, setUserName] = useState('')
 
+  const [waterQuantity, setWaterQuantity ] = useState<string>("")
+
+  const handleWaterQuantitySelection = ( selectedQuantity : string) => {
+    setWaterQuantity(selectedQuantity)
+  }
+
   const handleAddressSelect = (address: string) => {
     setSelectedAddress(address)
   }
@@ -68,11 +74,11 @@ export default  function Home() {
   }
 
   return (
-   <div className="max-w-6xl mx-auto shadow-lg  z-100">
+   <div className="max-w-6xl mx-auto shadow-sm pb-6 z-100">
     <NavBar />
     <LandingText />
     <Map onAddressSelect={handleAddressSelect}/>
-    <div className="h-[5rem] flex bg-purple-100">
+    <div className="h-[5rem] flex ">
       <Sheet>
         <SheetTrigger asChild>
           <Button 
@@ -83,27 +89,27 @@ export default  function Home() {
           </Button>
         </SheetTrigger>
 
-        <SheetContent className="bg-purple-100">
+        <SheetContent className="bg-gradient-to-b from-purple-500 to-black">
           <SheetHeader>
-            <SheetTitle>Confirm Order Details</SheetTitle>
-            <SheetDescription>
+            <SheetTitle className="text-white drop-shadow-md">Confirm Order Details</SheetTitle>
+            <SheetDescription className="text-gray-400 text-sm">
               Check to see that the details are correct. Click continue to proceed.
             </SheetDescription>
           </SheetHeader>
           <div className="grid py-4 ">
             <div className=" grid items-center">
-              <h3 className="flex-row p-2">Name: <span className="px-2">{userName}</span></h3>
+              <h3 className="flex-row p-2 text-white">Name: <span className="px-2">{userName}</span></h3>
             </div>
-            <div className="grid items-center my-6">
-              <h3 className="flex px-2">
+            <div className="grid items-center my-4 border-b-2 pb-6">
+              <h3 className="flex px-2 text-white">
                 Delivery Address:<span 
-                  className="italic px-2"
+                  className="italic px-2 text-sm text-gray-400"
                   >
                     {selectedAddress ? `${selectedAddress}` : 'Please select location from the map to continue'}
                   </span>
               </h3>
             </div>
-            <WaterQuantityCheckBox/>
+            <WaterQuantityCheckBox onWaterQuantitySelect={handleWaterQuantitySelection}/>
           </div>
           <SheetFooter>
             <SheetClose asChild>
@@ -111,33 +117,35 @@ export default  function Home() {
               <DialogTrigger asChild>
                 <Button 
                     type="submit" 
-                    variant='outline' 
-                    className="mx-auto my-2 w-40 p-6 hover:bg-purple-600 transition shadow-md hover:text-white"
+                    variant='secondary' 
+                    className="mx-auto my-2 w-40 p-6 hover:bg-purple-600 transition hover:text-white"
                 >
                     Place Order
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
+              <DialogContent className="sm:max-w-md bg-gradient-to-b from-purple-500 to-black">
                 <DialogHeader>
-                  <DialogTitle>Order Placed Successfully!</DialogTitle>
-                  <DialogDescription>
+                  <DialogTitle className="text-white">Order Placed Successfully!</DialogTitle>
+                  <DialogDescription className="text-white">
                     Delivery Details:
                   </DialogDescription>
                 </DialogHeader>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center">
                   <div className="grid flex-1 gap-2">
-                    <p>Name: {userName}</p>
-                    <p>Address: {selectedAddress}</p>
+                    <p className="text-white">Name: {userName}</p>
+                    <p className="text-white">Address: {selectedAddress}</p>
+                    <p className="text-white">Water Quantity: {waterQuantity}</p>
                   </div>
                 </div>
                 <DialogFooter className="sm:justify-start">
                   <DialogClose asChild>
                     <Button type="button" 
                         variant="secondary"
-                        className="hover:bg-purple-500 hover:text-white transition "
+                        className="text-black hover:bg-purple-500 hover:text-white transition  "
                         onClick={() => (
                           router.push('/orders/track')
-                        )}>
+                        )}
+                        >
                       Track Order
                     </Button>
                   </DialogClose>
